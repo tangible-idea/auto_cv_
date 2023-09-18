@@ -13,6 +13,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # state management
+  flutter_riverpod: ^2.4.0
+
+  file_picker: ^4.2.0
+
+  # resources
   cupertino_icons: ^1.0.2
 
   # Read PDF to text
