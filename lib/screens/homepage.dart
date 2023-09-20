@@ -2,7 +2,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:auto_cv/model/user_model.dart';
 import 'package:auto_cv/riverpod/simple_state_provider.dart';
+import 'package:auto_cv/riverpod/user_profilelist_provider.dart';
+import 'package:auto_cv/widgets/data_table.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:dart_pdf_reader/dart_pdf_reader.dart';
 import 'package:file_picker/file_picker.dart';
@@ -85,10 +88,18 @@ class MyHomePage extends ConsumerWidget {
 
         String requestMessage=
         //"\"$text\" \nRead this resume and extract name, headline, number, email, location, years of experience by prgramming skills in json format?";
-        "\"$text\" \nRead this resume and extract name, headline, number, email, location, frontend skills, backend skills, years of experience in json format?";
+        "\"$text\" \nRead this resume and extract name, headline, number, email, location, skillsFrontend(String List), skillsBackend(String List), experienceYear(int) in json format?";
 
         var result= await chatComplete(requestMessage);
+        var replacedResult= result.replaceAll('\n', '');
         ref.read(responseProvider.notifier).state = result;
+
+        print(replacedResult);
+        var userData= userModelFromJson(replacedResult);
+        // add user models to state.
+        ref.read(userProfileListProvider.notifier).addUserModels(
+            userData
+        );
       }
     } else {
       // User canceled the file picking process
@@ -110,10 +121,11 @@ class MyHomePage extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(
-                fileRef.toString(),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              // Text(
+              //   fileRef.toString(),
+              //   style: Theme.of(context).textTheme.bodySmall,
+              // ),
+              CVTable(),
               Text(
                 reponseRef.toString(),
                 style: Theme.of(context).textTheme.bodySmall,
