@@ -14,7 +14,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class MyHomePage extends ConsumerWidget {
-  MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title}) {
+    initGPT();
+  }
 
   final String title;
 
@@ -37,7 +39,7 @@ class MyHomePage extends ConsumerWidget {
 
     final request = ChatCompleteText(messages: [
       Messages(role: Role.system, content: messageRequest)
-    ], maxToken: 16384, model: GptTurbo16k0631Model());
+    ], maxToken: 8096, model: GptTurbo16k0631Model());
 
 
     String resume= "";
@@ -69,7 +71,7 @@ class MyHomePage extends ConsumerWidget {
 
   /// Select a file to extract.
   void _openFilePicker(WidgetRef ref) async {
-    await initGPT();
+
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         allowedExtensions: ["pdf"],
