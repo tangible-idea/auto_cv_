@@ -1,15 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../model/user_profile_item.dart';
+import '../model/user_model.dart';
 
 /// StateNotifierProvider is a combination of StateProvider and ChangeNotifierProvider.
-final userProfileListProvider = StateNotifierProvider<UserProfileNotifier, List<UserProfileItem>>
+final userProfileListProvider = StateNotifierProvider<UserProfileNotifier, List<UserModel>>
   ((ref) => UserProfileNotifier());
 
-class UserProfileNotifier extends StateNotifier<List<UserProfileItem>> {
+class UserProfileNotifier extends StateNotifier<List<UserModel>> {
   UserProfileNotifier() :
         super([
-          UserProfileItem(),
+          UserModel(),
         ]);
 }
 
