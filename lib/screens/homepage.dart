@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -26,8 +27,8 @@ class MyHomePage extends ConsumerWidget {
   OpenAI? openAI;
   Future<void> initGPT() async {
     openAI = OpenAI.instance.build(
-        token: "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",
-        baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 5)),
+        token: dotenv.get("API_KEY", fallback: ""),
+        baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 15)),
         enableLog: true);
 
   }
@@ -35,8 +36,8 @@ class MyHomePage extends ConsumerWidget {
   Future<String> chatComplete(String messageRequest) async {
 
     final request = ChatCompleteText(messages: [
-      Messages(role: Role.user, content: messageRequest)
-    ], maxToken: 2000, model: GptTurboChatModel());
+      Messages(role: Role.system, content: messageRequest)
+    ], maxToken: 16384, model: GptTurbo16k0631Model());
 
 
     String resume= "";
@@ -80,7 +81,11 @@ class MyHomePage extends ConsumerWidget {
         var text= await _extractAllText(file.path!);
         ref.read(fileProvider.notifier).state = text;
 
-        var result= await chatComplete(text);
+        String requestMessage=
+        //"\"$text\" \nRead this resume and extract name, headline, number, email, location, years of experience by prgramming skills in json format?";
+        "\"$text\" \nRead this resume and extract name, headline, number, email, location, frontend skills, backend skills, years of experience in json format?";
+
+        var result= await chatComplete(requestMessage);
         ref.read(responseProvider.notifier).state = result;
       }
     } else {

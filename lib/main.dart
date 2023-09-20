@@ -4,9 +4,11 @@ import 'package:auto_cv/screens/homepage.dart';
 import 'package:auto_cv/styles/themes.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: "assets/configs/.env");
   runApp(const MyApp());
 }
 
