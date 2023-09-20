@@ -97,7 +97,7 @@ class MyHomePage extends ConsumerWidget {
         print(replacedResult);
         var userData= userModelFromJson(replacedResult);
         // add user models to state.
-        ref.read(userProfileListProvider.notifier).addUserModels(
+        ref.read(userProfileListProvider.notifier).addUserModel(
             userData
         );
       }
@@ -125,7 +125,7 @@ class MyHomePage extends ConsumerWidget {
               //   fileRef.toString(),
               //   style: Theme.of(context).textTheme.bodySmall,
               // ),
-              CVTable(),
+              const CVTable(),
               Text(
                 reponseRef.toString(),
                 style: Theme.of(context).textTheme.bodySmall,

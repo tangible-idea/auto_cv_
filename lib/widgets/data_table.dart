@@ -12,7 +12,6 @@ class CVTable extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final userProvider= ref.watch(userProfileListProvider);
 
     if (userProvider.isEmpty) {
@@ -29,17 +28,21 @@ class CVTable extends ConsumerWidget {
       userData: userProvider,
     );
 
-    return DataTable2(columns: const [
-      DataColumn2(label: Text("Name"), size: ColumnSize.L),
-      DataColumn2(label: Text("Location"), size: ColumnSize.L),
-      DataColumn2(label: Text("Email"), size: ColumnSize.L),
-      DataColumn2(label: Text("Address"), size: ColumnSize.L),
-      DataColumn2(label: Text("Phone"), size: ColumnSize.L),
-      DataColumn2(label: Text("Experience Year"), size: ColumnSize.L),
-      DataColumn2(label: Text("Skill Frontend"), size: ColumnSize.L),
-      DataColumn2(label: Text("Skill Backend"), size: ColumnSize.L),
-      ],
-    rows: dtSource.getAllRows());
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 500),
+      child: DataTable2(columns: const [
+          DataColumn2(label: Text("Name"), size: ColumnSize.L),
+          DataColumn2(label: Text("headline"), size: ColumnSize.L),
+          DataColumn2(label: Text("Location"), size: ColumnSize.L),
+          DataColumn2(label: Text("Email"), size: ColumnSize.L),
+          DataColumn2(label: Text("Address"), size: ColumnSize.L),
+          DataColumn2(label: Text("Phone"), size: ColumnSize.L),
+          DataColumn2(label: Text("Experience Year"), size: ColumnSize.L),
+          DataColumn2(label: Text("Skill Frontend"), size: ColumnSize.L),
+          DataColumn2(label: Text("Skill Backend"), size: ColumnSize.L),
+        ],
+      rows: dtSource.getAllRows()),
+    );
   }
 }
 
@@ -79,10 +82,13 @@ class UserDataTableSource extends DataTableSource {
       index: index, // DONT MISS THIS
       cells: <DataCell>[
         DataCell(Text(_user.name)),
+        DataCell(Text(_user.headline)),
         DataCell(Text(_user.email)),
         DataCell(Text(_user.phone)),
         DataCell(Text(_user.address)),
         DataCell(Text(_user.location)),
+        DataCell(Text(_user.skillsFrontend.join(", "))),
+        DataCell(Text(_user.skillsBackend.join(", "))),
         DataCell(
           IconButton(
             hoverColor: Colors.transparent,

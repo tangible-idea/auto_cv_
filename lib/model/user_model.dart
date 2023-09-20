@@ -1,10 +1,18 @@
 import 'dart:convert';
 
-List<UserModel> userModelFromJson(String str) =>
-    List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
+UserModel userModelFromJson(String response) {
+  var jsonResponse= json.decode(response);
+  var objRoot= UserModel.fromJson(jsonResponse);
 
-String userModelToJson(List<UserModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+  // var mapped= decoded.map((x) => UserModel.fromJson(x));
+  // jsonResponse.rec
+
+  return objRoot;
+}
+
+String userModelToJson(List<UserModel> data) {
+  return json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+}
 
 // {
 // "name": "JaeJun Lee",
