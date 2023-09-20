@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         title: 'AUTO CV',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
-        home: const MyHomePage(title: 'AUTO CV'),
+        home: MyHomePage(title: 'AUTO CV'),
       ),
     );
   }

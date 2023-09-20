@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:auto_cv/riverpod/simple_state_provider.dart';
+import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:dart_pdf_reader/dart_pdf_reader.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class MyHomePage extends ConsumerWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -22,9 +23,34 @@ class MyHomePage extends ConsumerWidget {
     return bytes;
   }
 
+  OpenAI? openAI;
+  Future<void> initGPT() async {
+    openAI = OpenAI.instance.build(
+        token: "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",
+        baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 5)),
+        enableLog: true);
+
+  }
+
+  Future<String> chatComplete(String messageRequest) async {
+
+    final request = ChatCompleteText(messages: [
+      Messages(role: Role.user, content: messageRequest)
+    ], maxToken: 2000, model: GptTurboChatModel());
 
 
-  Future<void> _extractAllText(String filePath, WidgetRef ref) async {
+    String resume= "";
+    final response = await openAI?.onChatCompletion(request: request);
+    for (var element in response!.choices) {
+      //print("data -> ${element.message?.content}");
+      resume += element.message!.content;
+    }
+    return resume;
+  }
+
+
+
+  Future<String> _extractAllText(String filePath) async {
     //Load the existing PDF document.
     PdfDocument document =
     PdfDocument(inputBytes: await _readDocumentData(filePath));
@@ -36,31 +62,37 @@ class MyHomePage extends ConsumerWidget {
     String text = extractor.extractText();
 
     //Display the text.
-    print(text);
-
-    ref.read(fileProvider.notifier).state = await text;
-
+    //print(text);
+    return text;
   }
 
-
+  /// Select a file to extract.
   void _openFilePicker(WidgetRef ref) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    await initGPT();
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowedExtensions: ["pdf"],
+        allowMultiple: true,
+    );
 
     if (result != null) {
-      String filePath = result.files.single.path!;
-      // Process the selected file
-      print('File selected: $filePath');
-      //File inputFile= File(filePath);
-      _extractAllText(filePath, ref);
+      for (var file in result.files) {
+        var text= await _extractAllText(file.path!);
+        ref.read(fileProvider.notifier).state = text;
 
+        var result= await chatComplete(text);
+        ref.read(responseProvider.notifier).state = result;
+      }
     } else {
       // User canceled the file picking process
+      print(" User canceled the file picking process");
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider= ref.watch(fileProvider);
+    final fileRef= ref.watch(fileProvider);
+    final reponseRef= ref.watch(responseProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -69,9 +101,17 @@ class MyHomePage extends ConsumerWidget {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Text(
-            provider.toString(),
-            style: Theme.of(context).textTheme.bodySmall,
+          child: Column(
+            children: [
+              Text(
+                fileRef.toString(),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              Text(
+                reponseRef.toString(),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ),
         ),
       ),

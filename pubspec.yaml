@@ -24,9 +24,10 @@ dependencies:
   # Read PDF to text
   syncfusion_flutter_pdf: ^23.1.36
   dart_pdf_reader: ^0.4.2
+
   data_table_2: ^2.5.8
 
-  build_runner:
+  chat_gpt_sdk: ^2.2.5
 
 dev_dependencies:
   flutter_test:
