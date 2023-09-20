@@ -22,7 +22,8 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # Read PDF to text
-  pdf_text: ^0.5.0
+  syncfusion_flutter_pdf: ^23.1.36
+  dart_pdf_reader: ^0.4.2
   data_table_2: ^2.5.8
 
   build_runner:
