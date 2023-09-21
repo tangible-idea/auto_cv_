@@ -2,15 +2,21 @@ import 'dart:convert';
 
 UserModel userModelFromJson(String response) {
   var jsonResponse= json.decode(response);
-  var objRoot= UserModel.fromJson(jsonResponse);
 
-  // var mapped= decoded.map((x) => UserModel.fromJson(x));
-  // jsonResponse.rec
-  if(objRoot.github.isNotEmpty && !objRoot.github.startsWith("http")) {
-    objRoot.github = "https://${objRoot.github}";
+  UserModel user;
+  try {
+    user= UserModel.fromJson(jsonResponse);
+  } catch(e) {
+    print("exception from fromJson: $e");
+    user= UserModel();
   }
 
-  return objRoot;
+  // github put http
+  if(user.github.isNotEmpty && !user.github.startsWith("http")) {
+    user.github = "https://${user.github}";
+  }
+
+  return user;
 }
 
 String userModelToJson(List<UserModel> data) {
@@ -40,8 +46,8 @@ class UserModel {
   String location;
   String email;
   String github;
-  String phone;
-  int experienceYear;
+  String number;
+  double experienceYear;
   List<String> skillsFrontend;
   List<String> skillsBackend;
 
@@ -51,8 +57,8 @@ class UserModel {
     this.location = '',
     this.email = '',
     this.github = '',
-    this.phone = '',
-    this.experienceYear = 0,
+    this.number = '',
+    this.experienceYear = 0.0,
     List<String>? skillsFrontend,
     List<String>? skillsBackend,
   }) : skillsFrontend = skillsFrontend ?? [],
@@ -65,7 +71,7 @@ class UserModel {
       'location': location,
       'email': email,
       'github': github,
-      'phone': phone,
+      'number': number,
       'experienceYear': experienceYear,
       'skillsFrontend': skillsFrontend,
       'skillsBackend': skillsBackend,
@@ -79,8 +85,8 @@ class UserModel {
       location: json['location'] ?? '',
       email: json['email'] ?? '',
       github: json['github'] ?? '',
-      phone: json['phone'] ?? '',
-      experienceYear: json['experienceYear'] ?? 0,
+      number: json['number'] ?? '',
+      experienceYear: json['experienceYear'] ?? 0.0,
       skillsFrontend: List<String>.from(json['skillsFrontend'] ?? []),
       skillsBackend: List<String>.from(json['skillsBackend'] ?? []),
     );

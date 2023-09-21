@@ -30,8 +30,8 @@ class CustomScaffold extends StatelessWidget {
   final Widget _bottomSheet;
   final List<Widget> actions;
 
-  static TextStyle get light => TextStyle().c(Colors.black);
-  static TextStyle get dark => TextStyle().c(Colors.white);
+  static TextStyle get light => const TextStyle().c(Colors.black);
+  static TextStyle get dark => const TextStyle().c(Colors.white);
 
   List<Widget> get _showActions {
     if (showAppBarActions) {
@@ -43,7 +43,6 @@ class CustomScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //
 
     return Theme(
       data: enableDarkMode

@@ -78,7 +78,6 @@ class MyHomePage extends ConsumerWidget {
   /// Select a file to extract.
   void _openFilePicker(WidgetRef ref) async {
 
-
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         allowedExtensions: ["pdf"],
         allowMultiple: true,
@@ -89,12 +88,21 @@ class MyHomePage extends ConsumerWidget {
     if (result != null) {
       loadingState.state= true;
       for (var file in result.files) {
-        var text= await _extractAllText(file.path!);
-        ref.read(fileProvider.notifier).state = text;
+
+        print("Reading ${file.path}");
+        var extractedString = "";
+        try {
+          // PDF -> text
+          extractedString= await _extractAllText(file.path!);
+        }catch(e) {
+          print(e.toString());
+          continue;
+        }
+        ref.read(fileProvider.notifier).state = extractedString;
 
         String requestMessage=
         //"\"$text\" \nRead this resume and extract name, headline, number, email, location, years of experience by prgramming skills in json format?";
-        "\"$text\" \nRead this resume and extract name, headline, number, email, location, Github link, skillsFrontend(String List), skillsBackend(String List), experienceYear(int) in json format?";
+        "\"$extractedString\" \nRead this resume and extract name, headline, number, email, location, Github link, skillsFrontend(String List), skillsBackend(String List), experienceYear(double) in json format?";
 
         var result= await chatComplete(requestMessage);
         var replacedResult= result.replaceAll('\n', '');
@@ -102,6 +110,7 @@ class MyHomePage extends ConsumerWidget {
 
         print(replacedResult);
         var userData= userModelFromJson(replacedResult);
+
         // add user models to state.
         ref.read(userProfileListProvider.notifier).addUserModel(
             userData
@@ -133,10 +142,6 @@ class MyHomePage extends ConsumerWidget {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  // Text(
-                  //   fileRef.toString(),
-                  //   style: Theme.of(context).textTheme.bodySmall,
-                  // ),
                   const CVTable(),
                   Text(
                     responseRef.toString(),
@@ -150,7 +155,7 @@ class MyHomePage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: ()=> _openFilePicker(ref),
-        tooltip: 'file pick',
+        tooltip: 'pick files',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

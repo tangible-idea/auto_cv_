@@ -100,7 +100,7 @@ class UserDataTableSource extends DataTableSource {
               launchUrl(Uri.parse(_user.github));
             },
             ),),),
-        DataCell(Text(_user.phone)),
+        DataCell(Text(_user.number)),
         DataCell(Text(_user.experienceYear.toString())),
         DataCell(SingleChildScrollView(child: Text(_user.skillsFrontend.join(", ")))),
         DataCell(SingleChildScrollView(child: Text(_user.skillsBackend.join(", ")))),
