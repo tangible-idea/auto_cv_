@@ -35,11 +35,12 @@ class CVTable extends ConsumerWidget {
           DataColumn2(label: Text("headline"), size: ColumnSize.L),
           DataColumn2(label: Text("Location"), size: ColumnSize.L),
           DataColumn2(label: Text("Email"), size: ColumnSize.L),
-          DataColumn2(label: Text("Address"), size: ColumnSize.L),
+          DataColumn2(label: Text("Github"), size: ColumnSize.L),
           DataColumn2(label: Text("Phone"), size: ColumnSize.L),
           DataColumn2(label: Text("Experience Year"), size: ColumnSize.L),
           DataColumn2(label: Text("Skill Frontend"), size: ColumnSize.L),
           DataColumn2(label: Text("Skill Backend"), size: ColumnSize.L),
+          //DataColumn2(label: Text("Details"), size: ColumnSize.L),
         ],
       rows: dtSource.getAllRows()),
     );
@@ -79,24 +80,17 @@ class UserDataTableSource extends DataTableSource {
     final _user = _userData[index];
 
     return DataRow.byIndex(
-      index: index, // DONT MISS THIS
+      index: index,
       cells: <DataCell>[
         DataCell(Text(_user.name)),
         DataCell(Text(_user.headline)),
-        DataCell(Text(_user.email)),
-        DataCell(Text(_user.phone)),
-        DataCell(Text(_user.address)),
         DataCell(Text(_user.location)),
-        DataCell(Text(_user.skillsFrontend.join(", "))),
-        DataCell(Text(_user.skillsBackend.join(", "))),
-        DataCell(
-          IconButton(
-            hoverColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            icon: const Icon(Icons.details),
-            onPressed: () => onRowSelect(index),
-          ),
-        ),
+        DataCell(Text(_user.email)),
+        DataCell(Text(_user.github)),
+        DataCell(Text(_user.phone)),
+        DataCell(Text(_user.experienceYear.toString())),
+        DataCell(SingleChildScrollView(child: Text(_user.skillsFrontend.join(", ")))),
+        DataCell(SingleChildScrollView(child: Text(_user.skillsBackend.join(", ")))),
       ],
     );
   }

@@ -36,7 +36,7 @@ class UserModel {
   String headline;
   String location;
   String email;
-  String address;
+  String github;
   String phone;
   int experienceYear;
   List<String> skillsFrontend;
@@ -47,7 +47,7 @@ class UserModel {
     this.headline= '',
     this.location = '',
     this.email = '',
-    this.address = '',
+    this.github = '',
     this.phone = '',
     this.experienceYear = 0,
     List<String>? skillsFrontend,
@@ -61,7 +61,7 @@ class UserModel {
       'headline': headline,
       'location': location,
       'email': email,
-      'address': address,
+      'github': github,
       'phone': phone,
       'experienceYear': experienceYear,
       'skillsFrontend': skillsFrontend,
@@ -75,7 +75,7 @@ class UserModel {
       headline: json['headline'] ?? '',
       location: json['location'] ?? '',
       email: json['email'] ?? '',
-      address: json['address'] ?? '',
+      github: json['github'] ?? '',
       phone: json['phone'] ?? '',
       experienceYear: json['experienceYear'] ?? 0,
       skillsFrontend: List<String>.from(json['skillsFrontend'] ?? []),

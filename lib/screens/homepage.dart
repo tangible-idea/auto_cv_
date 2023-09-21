@@ -88,7 +88,7 @@ class MyHomePage extends ConsumerWidget {
 
         String requestMessage=
         //"\"$text\" \nRead this resume and extract name, headline, number, email, location, years of experience by prgramming skills in json format?";
-        "\"$text\" \nRead this resume and extract name, headline, number, email, location, skillsFrontend(String List), skillsBackend(String List), experienceYear(int) in json format?";
+        "\"$text\" \nRead this resume and extract name, headline, number, email, location, Github link, skillsFrontend(String List), skillsBackend(String List), experienceYear(int) in json format?";
 
         var result= await chatComplete(requestMessage);
         var replacedResult= result.replaceAll('\n', '');
