@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:auto_cv/model/user_model.dart';
 import 'package:auto_cv/riverpod/simple_state_provider.dart';
 import 'package:auto_cv/riverpod/user_profilelist_provider.dart';
+import 'package:auto_cv/utils/export_excel.dart';
 import 'package:auto_cv/widgets/data_table.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:dart_pdf_reader/dart_pdf_reader.dart';
@@ -59,10 +60,10 @@ class MyHomePage extends ConsumerWidget {
 
 
 
-  Future<String> _extractAllText(String filePath) async {
+  Future<String> _extractAllText(Uint8List fileBytes) async {
     //Load the existing PDF document.
     PdfDocument document =
-    PdfDocument(inputBytes: await _readDocumentData(filePath));
+    PdfDocument(inputBytes: fileBytes);
 
     //Create the new instance of the PdfTextExtractor.
     PdfTextExtractor extractor = PdfTextExtractor(document);
@@ -79,9 +80,10 @@ class MyHomePage extends ConsumerWidget {
   void _openFilePicker(WidgetRef ref) async {
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowedExtensions: ["pdf"],
-        allowMultiple: true,
+      type: FileType.any,
+      allowMultiple: true,
     );
+
 
     var loadingState= ref.read(loadingProvider.notifier);
 
@@ -89,11 +91,17 @@ class MyHomePage extends ConsumerWidget {
       loadingState.state= true;
       for (var file in result.files) {
 
-        print("Reading ${file.path}");
         var extractedString = "";
         try {
           // PDF -> text
-          extractedString= await _extractAllText(file.path!);
+          if(Platform.isMacOS) {
+            print("Reading ${file.path}");
+            var bytesFile= (await _readDocumentData(file.path!)) as Uint8List;
+            extractedString= await _extractAllText(bytesFile);
+          }else{ // on Web
+             _extractAllText(file.bytes!);
+          }
+
         }catch(e) {
           print(e.toString());
           continue;
@@ -133,6 +141,16 @@ class MyHomePage extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text("Auto CV", style: Theme.of(context).textTheme.titleLarge),
+          actions: [
+      IconButton(
+      icon: const Icon(Icons.import_export),
+          onPressed: () {
+
+            var listOfUsers= ref.read(userProfileListProvider.notifier).state;
+            ExportUtil.exportUserModelsToExcel(listOfUsers, "./");
+          },
+        ),
+        ],
       ),
       body: Center(
         child: Stack(
