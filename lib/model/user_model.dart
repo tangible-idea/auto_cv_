@@ -6,6 +6,9 @@ UserModel userModelFromJson(String response) {
 
   // var mapped= decoded.map((x) => UserModel.fromJson(x));
   // jsonResponse.rec
+  if(objRoot.github.isNotEmpty && !objRoot.github.startsWith("http")) {
+    objRoot.github += "https://";
+  }
 
   return objRoot;
 }

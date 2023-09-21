@@ -1,7 +1,9 @@
 
 import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../model/user_model.dart';
 import '../riverpod/user_profilelist_provider.dart';
@@ -86,7 +88,18 @@ class UserDataTableSource extends DataTableSource {
         DataCell(Text(_user.headline)),
         DataCell(Text(_user.location)),
         DataCell(Text(_user.email)),
-        DataCell(Text(_user.github)),
+        DataCell(RichText(
+            text: TextSpan(
+              text: _user.github,
+              style: const TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+            ),
+            recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              launchUrl(Uri.parse(_user.github));
+            },
+            ),),),
         DataCell(Text(_user.phone)),
         DataCell(Text(_user.experienceYear.toString())),
         DataCell(SingleChildScrollView(child: Text(_user.skillsFrontend.join(", ")))),
