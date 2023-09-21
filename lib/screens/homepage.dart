@@ -16,6 +16,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
+import '../widgets/circular_progress.dart';
+
 class MyHomePage extends ConsumerWidget {
   MyHomePage({super.key, required this.title}) {
     initGPT();
@@ -38,6 +40,7 @@ class MyHomePage extends ConsumerWidget {
 
   }
 
+  /// request to LLM
   Future<String> chatComplete(String messageRequest) async {
 
     final request = ChatCompleteText(messages: [
@@ -81,7 +84,10 @@ class MyHomePage extends ConsumerWidget {
         allowMultiple: true,
     );
 
+    var loadingState= ref.read(loadingProvider.notifier);
+
     if (result != null) {
+      loadingState.state= true;
       for (var file in result.files) {
         var text= await _extractAllText(file.path!);
         ref.read(fileProvider.notifier).state = text;
@@ -101,6 +107,7 @@ class MyHomePage extends ConsumerWidget {
             userData
         );
       }
+      loadingState.state= false;
     } else {
       // User canceled the file picking process
       print(" User canceled the file picking process");
@@ -110,28 +117,35 @@ class MyHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fileRef= ref.watch(fileProvider);
-    final reponseRef= ref.watch(responseProvider);
+    final responseRef= ref.watch(responseProvider);
+    final loadingRef= ref.watch(loadingProvider);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("title"),
+        title: Text("Auto CV", style: Theme.of(context).textTheme.titleLarge),
       ),
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Text(
-              //   fileRef.toString(),
-              //   style: Theme.of(context).textTheme.bodySmall,
-              // ),
-              const CVTable(),
-              Text(
-                reponseRef.toString(),
-                style: Theme.of(context).textTheme.bodySmall,
+        child: Stack(
+          children: [
+            // when it is loading show progress.
+            loadingRef ? CircularFullProgress() : const SizedBox(),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Text(
+                  //   fileRef.toString(),
+                  //   style: Theme.of(context).textTheme.bodySmall,
+                  // ),
+                  const CVTable(),
+                  Text(
+                    responseRef.toString(),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ]
         ),
       ),
       floatingActionButton: FloatingActionButton(
