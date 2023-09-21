@@ -36,7 +36,7 @@ class MyHomePage extends ConsumerWidget {
   Future<void> initGPT() async {
     openAI = OpenAI.instance.build(
         token: dotenv.get("API_KEY", fallback: ""),
-        baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 15)),
+        baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 30)),
         enableLog: true);
 
   }

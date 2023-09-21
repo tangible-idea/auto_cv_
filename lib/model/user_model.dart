@@ -8,6 +8,7 @@ UserModel userModelFromJson(String response) {
     user= UserModel.fromJson(jsonResponse);
   } catch(e) {
     print("exception from fromJson: $e");
+    print("jsonResponse: $jsonResponse");
     user= UserModel();
   }
 
@@ -79,6 +80,13 @@ class UserModel {
   }
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+
+    dynamic experienceYear= json['experienceYear'];
+    double lfExperienceYear= 0.0;
+    if(experienceYear != null && experienceYear != 0) {
+      lfExperienceYear= experienceYear;
+    }
+
     return UserModel(
       name: json['name'] ?? '',
       headline: json['headline'] ?? '',
@@ -86,7 +94,7 @@ class UserModel {
       email: json['email'] ?? '',
       github: json['github'] ?? '',
       number: json['number'] ?? '',
-      experienceYear: json['experienceYear'] ?? 0.0,
+      experienceYear: lfExperienceYear,
       skillsFrontend: List<String>.from(json['skillsFrontend'] ?? []),
       skillsBackend: List<String>.from(json['skillsBackend'] ?? []),
     );
