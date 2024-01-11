@@ -22,12 +22,14 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # Read PDF to text
-  syncfusion_flutter_pdf: ^23.1.36
+  syncfusion_flutter_pdf: ^24.1.45
   dart_pdf_reader: ^0.4.2
 
   excel: ^2.1.0
 
-  data_table_2: ^2.5.8
+  # data table
+  syncfusion_flutter_datagrid: ^24.1.45
+  data_table_2: ^2.5.10
 
   chat_gpt_sdk: ^2.2.5
   flutter_dotenv: ^5.1.0

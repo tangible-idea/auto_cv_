@@ -20,10 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: MaterialApp(
-        title: 'AUTO CV',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
-        home: MyHomePage(title: 'AUTO CV'),
+        home: MyHomePage(title: ''),
       ),
     );
   }

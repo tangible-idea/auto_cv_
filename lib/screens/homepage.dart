@@ -35,7 +35,7 @@ class MyHomePage extends ConsumerWidget {
   OpenAI? openAI;
   Future<void> initGPT() async {
     openAI = OpenAI.instance.build(
-        token: dotenv.get("API_KEY", fallback: ""),
+        token: dotenv.get("GPT_API_KEY", fallback: ""),
         baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 30)),
         enableLog: true);
 
@@ -139,9 +139,8 @@ class MyHomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text("Auto CV", style: Theme.of(context).textTheme.titleLarge),
-          actions: [
+        actions: [
       IconButton(
       icon: const Icon(Icons.import_export),
           onPressed: () {
@@ -160,7 +159,7 @@ class MyHomePage extends ConsumerWidget {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  const CVTable(),
+                  CVTable(),
                   Text(
                     responseRef.toString(),
                     style: Theme.of(context).textTheme.bodySmall,
