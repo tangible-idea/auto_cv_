@@ -44,6 +44,7 @@ class CVTable extends ConsumerWidget {
       child: SfDataGrid(
         gridLinesVisibility: GridLinesVisibility.both,
         columnWidthMode: ColumnWidthMode.auto,
+        allowFiltering: true,
         source: UserModelSource(users: userProvider),
         columns: [
           GridColumn(
