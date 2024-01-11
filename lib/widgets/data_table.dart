@@ -41,13 +41,16 @@ class CVTable extends ConsumerWidget {
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 500),
-      child: SfDataGrid(source: UserModelSource(users: userProvider),
+      child: SfDataGrid(
+        gridLinesVisibility: GridLinesVisibility.both,
+        columnWidthMode: ColumnWidthMode.auto,
+        source: UserModelSource(users: userProvider),
         columns: [
           GridColumn(
               columnName: 'name',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'Name',
                     overflow: TextOverflow.ellipsis,
@@ -56,7 +59,7 @@ class CVTable extends ConsumerWidget {
               columnName: 'headline',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'Headline',
                     overflow: TextOverflow.ellipsis,
@@ -65,7 +68,7 @@ class CVTable extends ConsumerWidget {
               columnName: 'location',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'Location',
                     overflow: TextOverflow.ellipsis,
@@ -74,7 +77,7 @@ class CVTable extends ConsumerWidget {
               columnName: 'email',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'Email',
                     overflow: TextOverflow.ellipsis,
@@ -83,7 +86,7 @@ class CVTable extends ConsumerWidget {
               columnName: 'github',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'Github',
                     overflow: TextOverflow.ellipsis,
@@ -92,7 +95,7 @@ class CVTable extends ConsumerWidget {
               columnName: 'number',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'Number',
                     overflow: TextOverflow.ellipsis,
@@ -101,7 +104,7 @@ class CVTable extends ConsumerWidget {
               columnName: 'experienceYear',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'experienceYear',
                     overflow: TextOverflow.ellipsis,
@@ -110,7 +113,7 @@ class CVTable extends ConsumerWidget {
               columnName: 'skillsFrontend',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'skillsFrontend',
                     overflow: TextOverflow.ellipsis,
@@ -119,7 +122,7 @@ class CVTable extends ConsumerWidget {
               columnName: 'skillsBackend',
               label: Container(
                   padding: marginSys16,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'skillsBackend',
                     overflow: TextOverflow.ellipsis,
