@@ -46,7 +46,7 @@ class MyHomePage extends ConsumerWidget {
 
     final request = ChatCompleteText(messages: [
       Messages(role: Role.system, content: messageRequest)
-    ], maxToken: 8096, model: GptTurbo16k0631Model());
+    ], maxToken: 4096, model: GptTurboChatModel());
 
 
     String resume= "";

@@ -17,7 +17,7 @@ class AppTheme {
       iconTheme: IconThemeData(color: _lightOnPrimaryColor),
     ),
     textTheme: const TextTheme(
-      bodyText2: TextStyle(color: Colors.black),
+      bodyMedium: TextStyle(color: Colors.black),
     ),
     fontFamily: ApplevelConstants.fontFamily,
   );
@@ -37,32 +37,32 @@ class AppTheme {
 
     // TEXTS
     textTheme: const TextTheme(
-      bodyText2: TextStyle(color: Colors.black),
-      headline1: TextStyle(
+      bodyMedium: TextStyle(color: Colors.black),
+      displayLarge: TextStyle(
         color: _darkPrimaryColor,
         fontSize: 96.0,
         letterSpacing: -1.5,
       ),
-      headline2: TextStyle(
+      displayMedium: TextStyle(
         color: _darkPrimaryColor,
         fontSize: 60.0,
         letterSpacing: -0.5,
       ),
-      headline3: TextStyle(
+      displaySmall: TextStyle(
         color: _darkPrimaryColor,
         fontSize: 48.0,
         letterSpacing: 0.0,
       ),
-      headline4: TextStyle(
+      headlineMedium: TextStyle(
         color: _darkPrimaryColor,
         fontSize: 34.0,
         letterSpacing: 0.25,
       ),
-      headline5: TextStyle(
+      headlineSmall: TextStyle(
         letterSpacing: 0.0,
         fontSize: 25.0,
       ),
-      headline6: TextStyle(
+      titleLarge: TextStyle(
         letterSpacing: 0.15,
         fontSize: 20.0,
       ),
