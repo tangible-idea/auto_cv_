@@ -8,7 +8,6 @@ import 'package:auto_cv/riverpod/user_profilelist_provider.dart';
 import 'package:auto_cv/utils/export_excel.dart';
 import 'package:auto_cv/widgets/data_table.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
-import 'package:dart_pdf_reader/dart_pdf_reader.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,19 +42,28 @@ class MyHomePage extends ConsumerWidget {
 
   /// request to LLM
   Future<String> chatComplete(String messageRequest) async {
-
-    final request = ChatCompleteText(messages: [
-      Messages(role: Role.system, content: messageRequest)
-    ], maxToken: 4096, model: GptTurboChatModel());
-
-
-    String resume= "";
-    final response = await openAI?.onChatCompletion(request: request);
-    for (var element in response!.choices) {
-      //print("data -> ${element.message?.content}");
-      resume += element.message!.content;
+    try {
+      // 2.2.8 버전에서 직접 모델 지정
+      final request = ChatCompleteText(
+        messages: [Messages(role: Role.system, content: messageRequest)],
+        maxToken: 4000,
+        model: Gpt4ChatModel()
+      );
+      
+      String resume = "";
+      final response = await openAI?.onChatCompletion(request: request);
+      if (response != null) {
+        for (var element in response.choices) {
+          if (element.message != null) {
+            resume += element.message?.content ?? "";
+          }
+        }
+      }
+      return resume;
+    } catch (e) {
+      print("OpenAI Error: $e");
+      return "OpenAI 요청 중 오류가 발생했습니다: $e";
     }
-    return resume;
   }
 
 
